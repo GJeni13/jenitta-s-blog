@@ -8,6 +8,7 @@ export default defineConfig({
       '/api': {
         target: 'https://jenittas-blog-backend.onrender.com',
         secure: false,
+        changeOrigin:true
       },
     },
   },
