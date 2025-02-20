@@ -20,10 +20,16 @@ export default function DashboardComp() {
   const [lastMonthPosts, setLastMonthPosts] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
   const { currentUser } = useSelector((state) => state.user);
+  const token=btoa(localStorage.getItem("mb-session"));
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/getusers?limit=5`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/getusers?limit=5`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -49,7 +55,12 @@ export default function DashboardComp() {
     };
     const fetchComments = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/getcomments?limit=5`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/getcomments?limit=5`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
         const data = await res.json();
         if (res.ok) {
           setComments(data.comments);

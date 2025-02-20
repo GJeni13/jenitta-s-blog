@@ -10,10 +10,16 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState('');
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/getusers`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/getusers`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${btoa(localStorage.getItem("mb-session"))}`
+          }
+        });
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -48,18 +54,18 @@ export default function DashUsers() {
 
   const handleDeleteUser = async () => {
     try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete/${userIdToDelete}`, {
-            method: 'DELETE',
-        });
-        const data = await res.json();
-        if (res.ok) {
-            setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
-            setShowModal(false);
-        } else {
-            console.log(data.message);
-        }
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete/${userIdToDelete}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
     } catch (error) {
-        console.log(error.message);
+      console.log(error.message);
     }
   };
 

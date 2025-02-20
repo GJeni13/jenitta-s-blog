@@ -35,6 +35,7 @@ export default function SignIn() {
       }
 
       if (res.ok) {
+        localStorage.setItem('mb-session',JSON.stringify(data));
         dispatch(signInSuccess(data));
         navigate('/');
       }

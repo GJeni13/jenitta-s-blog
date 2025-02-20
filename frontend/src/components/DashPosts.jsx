@@ -11,6 +11,8 @@ export default function DashPosts() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postIdToDelete, setPostIdToDelete] = useState('');
+  const token = btoa(localStorage.getItem("mb-session"));
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -56,6 +58,10 @@ export default function DashPosts() {
         `${import.meta.env.VITE_API_BASE_URL}/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
         {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+          },
         }
       );
       const data = await res.json();

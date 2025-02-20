@@ -12,6 +12,8 @@ export default function CommentSection({ postId }) {
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
+  const token = btoa(localStorage.getItem("mb-session"));
+
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +25,7 @@ export default function CommentSection({ postId }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           content: comment,
@@ -64,6 +67,10 @@ export default function CommentSection({ postId }) {
       }
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/likeComment/${commentId}`, {
         method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
       });
       if (res.ok) {
         const data = await res.json();
@@ -71,10 +78,10 @@ export default function CommentSection({ postId }) {
           comments.map((comment) =>
             comment._id === commentId
               ? {
-                  ...comment,
-                  likes: data.likes,
-                  numberOfLikes: data.likes.length,
-                }
+                ...comment,
+                likes: data.likes,
+                numberOfLikes: data.likes.length,
+              }
               : comment
           )
         );
@@ -101,6 +108,10 @@ export default function CommentSection({ postId }) {
       }
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/deleteComment/${commentId}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
       });
       if (res.ok) {
         const data = await res.json();

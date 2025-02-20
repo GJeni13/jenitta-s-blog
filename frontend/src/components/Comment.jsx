@@ -10,6 +10,8 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const { currentUser } = useSelector((state) => state.user);
+  const token = btoa(localStorage.getItem("mb-session"));
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -36,6 +38,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           content: editedContent,

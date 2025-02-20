@@ -36,6 +36,7 @@ export default function DashProfile() {
   const [formData, setFormData] = useState({});
   const filePickerRef = useRef();
   const dispatch = useDispatch();
+  const token = btoa(localStorage.getItem("mb-session"));
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -109,12 +110,15 @@ export default function DashProfile() {
       setUpdateUserError('Please wait for image to upload');
       return;
     }
+
     try {
       dispatch(updateStart());
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/update/${currentUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}` 
+
         },
         body: JSON.stringify(formData),
       });

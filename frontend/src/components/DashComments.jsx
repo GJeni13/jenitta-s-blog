@@ -10,10 +10,16 @@ export default function DashComments() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [commentIdToDelete, setCommentIdToDelete] = useState('');
+  const token = btoa(localStorage.getItem("mb-session"));
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/getcomments`);
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/comment/getcomments`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
         const data = await res.json();
         if (res.ok) {
           setComments(data.comments);
@@ -55,6 +61,10 @@ export default function DashComments() {
         `${import.meta.env.VITE_API_BASE_URL}/api/comment/deleteComment/${commentIdToDelete}`,
         {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
+          },
         }
       );
       const data = await res.json();

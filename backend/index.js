@@ -23,16 +23,17 @@ mongoose
 const __dirname = path.resolve();
 
 const app = express();
-
+// Middleware
+app.use(cookieParser()); // This will parse cookies in requests
+app.use(express.json()); // To parse JSON request bodies
 app.use(
   cors({
-    origin: ['https://genittas-blog.netlify.app','http://localhost:3000'], // Replace with your actual Netlify domain
+    origin: ['https://genittas-blog.netlify.app','http://localhost:5173'], // Replace with your actual Netlify domain
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true, // If using cookies or authentication
   })
 );
-app.use(express.json());
-app.use(cookieParser());
+
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
@@ -42,11 +43,11 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
-// app.use(express.static(path.join(__dirname, '/frontend/dist')));
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

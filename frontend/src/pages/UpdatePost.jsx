@@ -21,6 +21,7 @@ export default function UpdatePost() {
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
   const { postId } = useParams();
+  const token = btoa(localStorage.getItem("mb-session"));
 
   const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
@@ -90,6 +91,7 @@ export default function UpdatePost() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(formData),
       });

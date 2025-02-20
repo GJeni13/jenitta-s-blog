@@ -65,6 +65,7 @@ export default function CreatePost() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": `Bearer ${btoa(localStorage.getItem("mb-session"))}`
         },
         body: JSON.stringify(formData),
       });
