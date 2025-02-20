@@ -24,6 +24,13 @@ const __dirname = path.resolve();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: ['https://genittas-blog.netlify.app','http://localhost:3000'], // Replace with your actual Netlify domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true, // If using cookies or authentication
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
@@ -35,13 +42,6 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/post', postRoutes);
 app.use('/api/comment', commentRoutes);
-app.use(
-  cors({
-    origin: ['https://genittas-blog.netlify.app','http://localhost:3000'], // Replace with your actual Netlify domain
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // If using cookies or authentication
-  })
-);
 // app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
 // app.get('*', (req, res) => {
