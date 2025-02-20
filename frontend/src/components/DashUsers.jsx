@@ -10,6 +10,7 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState('');
+  const token = btoa(localStorage.getItem("mb-session"));
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -56,6 +57,10 @@ export default function DashUsers() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete/${userIdToDelete}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
+        },
       });
       const data = await res.json();
       if (res.ok) {
